@@ -115,7 +115,7 @@ print(train_df)
 print("================== Question 14 ===============================")
 #train_df[["Ticket","Survived"]][:100].hist(column="Ticket", by=train_df["Survived"])
 q14 = pd.DataFrame(train_df["Ticket"])
-q14["Ticket"].value_counts()[:100].plot(kind="bar")
+#q14["Ticket"].value_counts()[:100].plot(kind="bar")
 q14 = pd.DataFrame(train_df[["Ticket","Survived"]])
 q14.Ticket = pd.to_numeric(q14.Ticket, errors='coerce').fillna(0).astype(np.int64)
 q14 = q14[q14["Ticket"] != 0]
@@ -130,20 +130,30 @@ q15_2 = pd.DataFrame(test_df["Cabin"])
 print(q15[q15["Cabin"].isnull()])
 print(q15_2[q15_2["Cabin"].isnull()])
 
-
 #Question 16
+train_df = pd.read_csv('train.csv')
+test_df = pd.read_csv('test.csv')
 q16 = pd.DataFrame(train_df)
 q16.loc[q16["Sex"] == "female", "Sex"] = 1
 q16.loc[q16["Sex"] == "male", "Sex"] = 0
 q16 = q16.rename(index=str, columns={"Sex":"Gender"})
+
+test_df.loc[test_df["Sex"] == "female", "Sex"] = 1
+test_df.loc[test_df["Sex"] == "male", "Sex"] = 0
+test_df = test_df.rename(index=str, columns={"Sex":"Gender"})
 print(q16)
 
-#question 17
+#question 18
+train_df = pd.DataFrame(q16)
+print(train_df["Embarked"].value_counts())
+train_df.loc[train_df["Embarked"].isnull(), "Embarked"] = "S"
 
 
+#question 19
+#print(train_df[train_df["Fare"].notnull()]["Fare"].agg(np.mode))
+print(train_df[train_df["Fare"].notnull()]["Fare"].mode()[0])
+train_df.loc[train_df["Fare"].isnull(), "Fare"] = train_df[train_df["Fare"].notnull()]["Fare"].mode()[0]
 
-#print(train_df["Ticket"].groupby("Ticket").count())
-#print(train_df[["Ticket","Survived"]])
 
 
 pylab.show()
